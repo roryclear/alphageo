@@ -192,9 +192,9 @@ def estimate(panoId):
 	    return lat,lon
 
 def loadModel():
-	if not os.path.exists("model"):
+	if not os.path.exists("model") or not os.path.exists("model/version.txt"):
 		print("downloading model")
-		url = "https://drive.google.com/drive/folders/1eDtVBu9Q-uX2WJztRCi3jKlnR67MbuyK?usp=sharing"
+		url = "https://drive.google.com/drive/folders/1lPhFJrBVmJL_7C0-NKpW0GfuXNv0wqaL?usp=sharing"
 		gdown.download_folder(url, use_cookies=False)
 		print("download complete")
 
