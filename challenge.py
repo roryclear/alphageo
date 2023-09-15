@@ -21,7 +21,8 @@ def startNewGame(token,cookie):
 	  "timeLimit": 0,
 	  "forbidMoving": True,
 	  "forbidZooming": True,
-	  "forbidRotating": False
+	  "forbidRotating": False,
+	  "rounds":5
 	})
 	headers = {
 	  'authority': 'www.geoguessr.com',
@@ -204,7 +205,10 @@ def getCookie(email,password):
 	}
 	conn.request("POST", "/api/v3/accounts/signin", payload, headers)
 	res = conn.getresponse()
-	return res.headers["Set-Cookie"]
+	headersString = str(res.headers)
+	headersString = headersString[headersString.index("_ncfa="):]
+	cookie = headersString[:headersString.index(";")+1]
+	return cookie
 
 def estimate(panoId):
 	getImageForKey(panoId) 	
