@@ -15,13 +15,15 @@ numberOfClasses = 128
 
 def startNewGame(cookie):
 	conn = http.client.HTTPSConnection("www.geoguessr.com")
+	'''
 	payload = json.dumps({
 	  "map": "world",
 	  "type": "standard",
 	  "timeLimit": 0,
 	  "forbidMoving": True,
 	  "forbidZooming": True,
-	  "forbidRotating": False
+	  "forbidRotating": False,
+	  "rounds":5
 	})
 	headers = {
 	  'authority': 'www.geoguessr.com',
@@ -29,11 +31,26 @@ def startNewGame(cookie):
 	  'accept-language': 'en-US,en;q=0.9',
 	  'content-type': 'application/json',
 	  'cookie': cookie,
-	  'origin': 'https://www.geoguessr.com',
-	  'referer': 'https://www.geoguessr.com/maps/world/play',
-	  'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
-	  'x-client': 'web'
 	}
+	'''
+
+	payload = json.dumps({
+	  "map": "world",
+	  "type": "standard",
+	  "timeLimit": 0,
+	  "forbidMoving": True,
+	  "forbidZooming": False,
+	  "forbidRotating": False,
+	  "rounds": 5
+	})
+	headers = {
+	  'authority': 'www.geoguessr.com',
+	  'accept': '*/*',
+	  'accept-language': 'en-US,en;q=0.9',
+	  'content-type': 'application/json',
+	  'cookie': cookie
+	}
+
 	conn.request("POST", "/api/v3/games", payload, headers)
 	res = conn.getresponse()
 	data = res.read()
@@ -170,7 +187,10 @@ def getCookie(email,password):
 	}
 	conn.request("POST", "/api/v3/accounts/signin", payload, headers)
 	res = conn.getresponse()
-	return res.headers["Set-Cookie"]
+	headersString = str(res.headers)
+	headersString = headersString[headersString.index("_ncfa="):]
+	cookie = headersString[:headersString.index(";")+1]
+	return cookie
 
 def estimate(panoId):
 	getImageForKey(panoId) 	
