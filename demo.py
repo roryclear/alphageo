@@ -11,28 +11,10 @@ import tensorflow as tf
 import numpy
 import gdown
 
-numberOfClasses = 128
+numberOfClasses = 256
 
 def startNewGame(cookie):
 	conn = http.client.HTTPSConnection("www.geoguessr.com")
-	'''
-	payload = json.dumps({
-	  "map": "world",
-	  "type": "standard",
-	  "timeLimit": 0,
-	  "forbidMoving": True,
-	  "forbidZooming": True,
-	  "forbidRotating": False,
-	  "rounds":5
-	})
-	headers = {
-	  'authority': 'www.geoguessr.com',
-	  'accept': '*/*',
-	  'accept-language': 'en-US,en;q=0.9',
-	  'content-type': 'application/json',
-	  'cookie': cookie,
-	}
-	'''
 
 	payload = json.dumps({
 	  "map": "world",
@@ -212,12 +194,14 @@ def estimate(panoId):
 	    return lat,lon
 
 def loadModel():
-	if not os.path.exists("model") or not os.path.exists("model/version.txt"):
-		print("downloading model")
-		url = "https://drive.google.com/drive/folders/1lPhFJrBVmJL_7C0-NKpW0GfuXNv0wqaL?usp=sharing"
-		gdown.download_folder(url, use_cookies=False)
-		print("download complete")
-
+	if os.path.exists("model/version.txt"):
+		version = open('model/version.txt', 'r').read()
+		if version == "3":
+			return tf.keras.models.load_model('model')
+	print("downloading model")
+	url = "https://drive.google.com/drive/folders/1kzsbAskGlcnjXxHzw90LWG0IvGfQeKSc?usp=sharing"
+	gdown.download_folder(url, use_cookies=False)
+	print("download complete")
 	return tf.keras.models.load_model('model')
 
 makeDirs()
