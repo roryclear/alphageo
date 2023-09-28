@@ -10,6 +10,7 @@ from io import BytesIO
 import tensorflow as tf
 import numpy
 import gdown
+import shutil
 
 numberOfClasses = 256
 
@@ -234,6 +235,9 @@ def loadModel():
 		version = open('model/version.txt', 'r').read()
 		if version == "3":
 			return tf.keras.models.load_model('model')
+	if os.path.exists("model"):
+		shutil.rmtree('model')
+
 	print("downloading model")
 	url = "https://drive.google.com/drive/folders/1kzsbAskGlcnjXxHzw90LWG0IvGfQeKSc?usp=sharing"
 	gdown.download_folder(url, use_cookies=False)
