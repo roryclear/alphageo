@@ -1,5 +1,5 @@
 # alphageo
-A python script that plays GeoGussr on the "World" map using a model trained on real games.  
+A python script that plays GeoGuessr on the "World" map using a model trained on real games.  
 
 **Watch demonstration: https://www.youtube.com/watch?v=JirlTidAhnQ**
 ## requirements
